@@ -15,5 +15,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mssql": "^10.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "tslib": "^2.6.2"
   }
 }
