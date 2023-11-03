@@ -1,5 +1,7 @@
 const EXPRESS=require('express')
 const app=EXPRESS()
+const sql = require('mssql');
+const cors = require('cors');
 
 const listStoryR=require("./router/listStory")
 const listAnnR=require("./router/announcementList")
@@ -10,6 +12,10 @@ const userInfo=require("./router/userInfo")
 const image=require("./router/image")
 const Login=require("./router/login")
 
+//跨域问题
+app.use(cors({
+    allowedHeaders: ['Content-Type', 'x-requested-with'] // 添加允许的请求头字段
+}));
 //中间件配置
 //适应Post请求
 app.use(EXPRESS.json())
@@ -28,7 +34,19 @@ app.use("/",userInfo)
 app.use("/",novelDetail)
 app.use("/",image)
 app.use("/",Login)
-
+const config = {
+    server: 'localhost',
+    database: 'tai',
+    user: 'sa',
+    password: '123456',
+    options: {
+        trustServerCertificate: true
+    }
+};
+sql.connect(config, function (err) {
+    if (err)  throw err;
+    app.locals.request = new sql.Request();
+});
 app.get("/",(req, res)=>{
     res.send(`<div style="position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);">
                     <h1>welcome this project</h1>
